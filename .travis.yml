@@ -6,4 +6,16 @@ before_install:
   - docker build -t eb0x/docker-react-travis-aws-playground -f Dockerfile.dev .
 
 script: 
-  - docker run -c CI=true eb0x94/docker-react-travis-aws-playground npm run test
+  - docker run -c CI=true eb0x94/docker-react-travis-aws-playground npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-north-1"
+  app: "docker-react-travis-aws"
+  env: "Dockerreacttravisaws-env"
+  bucket_name: "elasticbeanstalk-eu-north-1-890336185902"
+  bucket_path: "docker-react-travis-aws"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
